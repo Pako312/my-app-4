@@ -3,7 +3,12 @@ import img_1 from "./components/assets/images/Beef-Plov3.jpg"
 import img_2 from "./components/assets/images/Lagman.jpg"
 import img_3 from "./components/assets/images/Manty.jpg"
 import FoodCard from './components/FoodCard/FoodCard';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
+
+// import ToggleBox from './components/ToggleBox';
+
+export const ThemeContext = createContext('light')
+
 
 const DATA = [
   {
@@ -12,7 +17,7 @@ const DATA = [
     title: 'Plov',
     price: 'Price',
     cost: 200,
-    delete:'Delete'
+    delete: 'Delete'
   },
   {
     id: 2,
@@ -20,30 +25,29 @@ const DATA = [
     title: 'Lagman',
     price: 'Price',
     cost: 180,
-    delete:'Delete'
+    delete: 'Delete'
   },
   {
     id: 3,
     image: img_3,
     title: 'Manty',
     price: 'Price',
-    cost: 220, 
-    delete:'Delete'
+    cost: 220,
+    delete: 'Delete'
   }
 ]
 
-// const ShowFood = () => {
-//   const [DATA, setNewDATA] = useState(DATA)
-//   const filtered = DATA.filter(item => item === DATA.title)
-// console.log(filtered)
-// }
-
 function App() {
 
+  const [theme, setTheme] = useState("light");
+
+  const changeTheme = () => {
+    setTheme((cur) => (cur === "light" ? "dark" : "light"));
+  }
   const [dishes, setDishes] = useState(DATA);
   const [value, setInputValue] = useState('')
 
-  function handleAddDish (e) {
+  function handleAddDish(e) {
     e.preventDefault();
     const copyArr = [...dishes]
     const newDish = {
@@ -51,7 +55,7 @@ function App() {
       title: value,
       price: '',
       cost: 0,
-      delete:'Delete'
+      delete: 'Delete'
     }
     copyArr.push(newDish)
     setDishes(copyArr)
@@ -59,38 +63,49 @@ function App() {
 
   function handleDeleteDish(id) {
     setDishes(dishes.filter((food) => {
-       return food.id !== id
+      return food.id !== id
     }))
   }
 
   return (
-    <div className="container">
+    <div id={theme}>
+      <div className="container">
+        <div className="toggle">
+          <label for="over" className="switch-box">
+            <input onChange={changeTheme} type="checkbox" className="switch__input" id="over" />
+            <span className="Left on">Light</span>
+            <span className="right on">Dark</span>
+            <div className="box-sw"></div>
+            <i className="switch-slider"></i>
+          </label>
+        </div>
+        <div className='foodCard'>
+          <div className='InputBox'>
+            <form>
+              <input value={value} type="text" placeholder='What do you want to eat?' onChange={(e) => setInputValue(e.target.value)} />
+              <input
+                onClick={handleAddDish}
+                type="submit" value="Add" />
+            </form>
+          </div>
 
-      <div className='foodCard'>
-        <div className='InputBox'>
-          <form>
-            <input value={value} type="text" placeholder='What do you want to eat?' onChange={(e) => setInputValue(e.target.value)}/>
-            <input
-              onClick={handleAddDish}
-              type="submit" value="Add" />
-          </form>
+
+          {dishes.map(food => {
+            return (
+              <FoodCard
+                key={food.id}
+                data={food}
+                onClick={() => handleDeleteDish(food.id)}
+              />
+            )
+          })}
         </div>
 
 
-        {dishes.map(food => {
-          return (
-            <FoodCard 
-           key={food.id}
-           data={food}
-           onClick={() => handleDeleteDish(food.id)}
-            />
-          )
-        })}
+
       </div>
+    </div>
 
-
-
-    </div >
   );
 }
 
