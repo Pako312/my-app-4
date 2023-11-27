@@ -14,7 +14,7 @@
 .foodCard {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  align-items: center;
 }
 
 
@@ -26,7 +26,9 @@
 
 
 .toggle {
-  margin-bottom: 32px;
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
 }
 
 .switch-box {
