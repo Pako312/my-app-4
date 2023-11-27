@@ -1,0 +1,17 @@
+
+.foodCard_item {
+    text-align: center;
+    margin: 20px;
+    border: 1px solid black;
+    width: 35%;
+  }
+  
+  .image-wrap {
+    height: 350px;
+  }
+  
+  .image-wrap img {
+    width: 100%;
+    height: 95%;
+    object-fit: cover;
+  }
